@@ -564,6 +564,88 @@ footer{text-align:center;padding:36px 20px 44px;color:var(--muted);font-size:.88
   html{scroll-behavior:auto}
 }
 </style>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LYDVZ0XJSD"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LYDVZ0XJSD');
+</script>
+
+<!-- Portfolio Analytics Events -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+
+    // Track external/social links
+    document.querySelectorAll('a[href]').forEach(function (link) {
+      link.addEventListener('click', function () {
+        const href = this.href || '';
+
+        if (href.includes('linkedin.com')) {
+          gtag('event', 'linkedin_click', {
+            event_category: 'social',
+            event_label: href
+          });
+        }
+
+        if (href.includes('instagram.com')) {
+          gtag('event', 'instagram_click', {
+            event_category: 'social',
+            event_label: href
+          });
+        }
+
+        if (href.includes('behance.net')) {
+          gtag('event', 'behance_click', {
+            event_category: 'social',
+            event_label: href
+          });
+        }
+
+        if (href.includes('wa.me') || href.includes('whatsapp')) {
+          gtag('event', 'whatsapp_click', {
+            event_category: 'contact',
+            event_label: href
+          });
+        }
+
+        if (href.startsWith('mailto:')) {
+          gtag('event', 'email_click', {
+            event_category: 'contact',
+            event_label: href
+          });
+        }
+
+        if (href.toLowerCase().includes('.pdf')) {
+          gtag('event', 'cv_download', {
+            event_category: 'download',
+            event_label: href
+          });
+        }
+      });
+    });
+
+    // Track project clicks
+    document.querySelectorAll('[data-project], .project, .project-card, .portfolio-item')
+      .forEach(function (item) {
+        item.addEventListener('click', function () {
+          const projectName =
+            this.dataset.project ||
+            this.dataset.name ||
+            this.getAttribute('aria-label') ||
+            'portfolio_project';
+
+          gtag('event', 'project_view', {
+            event_category: 'portfolio',
+            event_label: projectName
+          });
+        });
+      });
+
+  });
+</script>
 </head>
 <body class="loading">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
