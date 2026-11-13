@@ -65,11 +65,11 @@ html{scrollbar-color:var(--indigo) var(--bg);scrollbar-width:thin}
 @media (hover:hover) and (pointer:fine){
   body, a, button{cursor:none}
 }
-.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:10001;border-radius:50%;transform:translate(-50%,-50%);opacity:0;transition:opacity .3s}
-.cursor-dot{width:8px;height:8px;background:var(--cyan);box-shadow:0 0 12px 3px var(--cyan),0 0 26px 6px rgba(34,211,238,.45)}
-.cursor-ring{width:38px;height:38px;border:1.5px solid rgba(255,45,149,.75);transition:width .25s,height .25s,border-color .25s,opacity .3s,background .25s}
-.cursor-ring.hover{width:64px;height:64px;border-color:var(--amber);background:rgba(251,191,36,.08)}
-@media (hover:none),(pointer:coarse){.cursor-dot,.cursor-ring{display:none}}
+.cursor-dot{position:fixed;top:0;left:0;width:34px;height:34px;pointer-events:none;z-index:10001;opacity:0;color:var(--pink);transition:opacity .3s,color .25s;will-change:transform;filter:drop-shadow(0 0 7px rgba(255,45,149,.55))}
+.cursor-dot svg{width:100%;height:100%;display:block;overflow:visible;transform-origin:8% 8%;transition:transform .2s}
+.cursor-dot.hover{color:var(--amber);filter:drop-shadow(0 0 7px rgba(251,191,36,.6))}
+.cursor-dot.hover svg{transform:scale(1.22) rotate(-8deg)}
+@media (hover:none),(pointer:coarse){.cursor-dot{display:none}}
 
 /* Background layers */
 #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
@@ -449,7 +449,7 @@ footer{text-align:center;padding:36px 20px 44px;color:var(--muted);font-size:.88
 .handle.ml{left:0;top:50%}.handle.mr{left:100%;top:50%}
 .handle.bl{left:0;top:100%}.handle.bc{left:50%;top:100%}.handle.br{left:100%;top:100%}
 .cursor-tag{position:absolute;right:-18px;bottom:-34px;display:flex;align-items:flex-start;gap:0;animation:tagfloat 4s ease-in-out infinite}
-.cursor-tag b{margin:20px 0 0 -2px;padding:4px 12px;border-radius:6px 12px 12px 12px;background:var(--pink);color:#fff;font-size:.8rem;font-weight:700;white-space:nowrap}
+.cursor-tag b{margin:14px 0 0 -4px;padding:4px 12px;border-radius:6px 12px 12px 12px;background:var(--pink);color:#fff;font-size:.8rem;font-weight:700;white-space:nowrap}
 @keyframes tagfloat{0%,100%{transform:translate(0,0)}50%{transform:translate(-10px,-8px)}}
 .about-text p{color:var(--muted);max-width:540px;margin-bottom:16px}
 .about-stats{display:flex;flex-wrap:wrap;gap:20px 40px;margin:28px 0 34px}
@@ -655,8 +655,7 @@ footer{text-align:center;padding:36px 20px 44px;color:var(--muted);font-size:.88
   <div class="loader-bar"><span></span></div>
 </div>
 
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linejoin="round" stroke-linecap="round"><path d="m12 19 7-7 3 3-7 7-3-3z" fill="currentColor" stroke="#fff" stroke-width="1.3"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" fill="currentColor" stroke="#fff" stroke-width="1.3"/><path d="m2 2 7.586 7.586" fill="none" stroke="#fff" stroke-width="1.3"/><circle cx="11" cy="11" r="2" fill="#fff" stroke="#fff" stroke-width="1"/></svg></div>
 <canvas id="bg-canvas"></canvas>
 <div class="noise"></div>
 
@@ -731,7 +730,7 @@ footer{text-align:center;padding:36px 20px 44px;color:var(--muted);font-size:.88
           <i class="handle tl"></i><i class="handle tc"></i><i class="handle tr"></i>
           <i class="handle ml"></i><i class="handle mr"></i>
           <i class="handle bl"></i><i class="handle bc"></i><i class="handle br"></i>
-          <span class="cursor-tag" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" stroke-linejoin="round" stroke-linecap="round"><path d="m12 19 7-7 3 3-7 7-3-3z" fill="#ff2d95" stroke="#fff" stroke-width="1.4"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" fill="#ff2d95" stroke="#fff" stroke-width="1.4"/><path d="m2 2 7.586 7.586" fill="none" stroke="#fff" stroke-width="1.4"/><circle cx="11" cy="11" r="2" fill="#fff" stroke="#fff" stroke-width="1"/></svg><b>Mohamed Emam</b></span>
+          <span class="cursor-tag" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 3l16 7-7 2-2 7z" fill="#ff2d95" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg><b>Mohamed Emam</b></span>
         </div>
         <span class="tool crown" aria-hidden="true" style="--d:-1s"><svg><use href="#i-crown"/></svg></span>
         <span class="tool typ" aria-hidden="true" style="--d:-3s"><svg><use href="#i-type"/></svg></span>
@@ -1018,23 +1017,17 @@ footer{text-align:center;padding:36px 20px 44px;color:var(--muted);font-size:.88
     if(e.target.tagName === 'A'){ links.classList.remove('open'); burger.classList.remove('open'); burger.setAttribute('aria-expanded', false); }
   });
 
-  /* Custom cursor */
-  var dot = document.getElementById('cursorDot'), ring = document.getElementById('cursorRing');
-  var mx = -100, my = -100, rx = -100, ry = -100, shown = false;
+  /* Custom cursor: pen tool, tip is the pointer hotspot */
+  var dot = document.getElementById('cursorDot');
+  var shown = false;
   window.addEventListener('mousemove', function(e){
-    mx = e.clientX; my = e.clientY;
-    dot.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
-    if(!shown){ shown = true; dot.style.opacity = 1; ring.style.opacity = 1; rx = mx; ry = my; }
+    dot.style.transform = 'translate(' + (e.clientX - 2) + 'px,' + (e.clientY - 2) + 'px)';
+    if(!shown){ shown = true; dot.style.opacity = 1; }
   });
-  document.addEventListener('mouseleave', function(){ dot.style.opacity = 0; ring.style.opacity = 0; shown = false; });
-  (function follow(){
-    rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
-    ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
-    requestAnimationFrame(follow);
-  })();
+  document.addEventListener('mouseleave', function(){ dot.style.opacity = 0; shown = false; });
   var hoverSel = 'a,button,.chip,.project,.job,.panel,.contact-card,.client';
-  document.addEventListener('mouseover', function(e){ if(e.target.closest(hoverSel)) ring.classList.add('hover'); });
-  document.addEventListener('mouseout', function(e){ if(e.target.closest(hoverSel)) ring.classList.remove('hover'); });
+  document.addEventListener('mouseover', function(e){ if(e.target.closest(hoverSel)) dot.classList.add('hover'); });
+  document.addEventListener('mouseout', function(e){ if(e.target.closest(hoverSel)) dot.classList.remove('hover'); });
 
   /* Particle network */
   var canvas = document.getElementById('bg-canvas'), ctx = canvas.getContext('2d');
