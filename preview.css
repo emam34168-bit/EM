@@ -73,3 +73,10 @@ button.btn{font-family:var(--body);background:transparent}
 @media(max-width:760px){.hero-visual{min-height:435px}.adobe-tools{margin-top:20px;padding-top:18px;gap:12px}.adobe-icon{width:43px;height:43px;font-size:23px}}
 
 .job-top{display:flex;justify-content:space-between;align-items:baseline;gap:20px}.job-date{font-size:13px;color:var(--muted);white-space:nowrap}.company{color:var(--pink);margin:6px 0 14px;font-size:14px}.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}@media(max-width:600px){.job-top{display:block}.job-date{display:block;margin-top:6px;white-space:normal}}
+/* Client logos: plain, unboxed grid matching the supplied reference. */
+#clients .clients-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:0}
+#clients .client{flex:0 0 12.5%;display:flex;align-items:center;justify-content:center;height:104px;padding:0 16px;background:none!important;border:0!important;outline:0!important;box-shadow:none!important;border-radius:0!important;filter:none!important}
+#clients .client::before,#clients .client::after{display:none!important}
+#clients .client img{max-width:100%;max-height:var(--h,48px);width:auto;height:auto;object-fit:contain;opacity:.85}
+@media(max-width:1199px){#clients .client{flex-basis:20%}}
+@media(max-width:720px){#clients .client{flex-basis:25%;height:78px;padding:0 6px}#clients .client img{max-height:calc(var(--h,48px)*.72)}}
