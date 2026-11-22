@@ -3,7 +3,7 @@ const burger=document.getElementById('burger'),nav=document.getElementById('navL
 burger.addEventListener('click',()=>{const open=nav.classList.toggle('open');burger.classList.toggle('open',open);burger.setAttribute('aria-expanded',String(open));});
 nav.addEventListener('click',e=>{if(e.target.closest('a')){nav.classList.remove('open');burger.classList.remove('open');burger.setAttribute('aria-expanded','false');}});
   var PROJECTS = [
-    ['Ocean Blue Hotel','255788455/Ocean-Blue-Hotel','57a307255788455.Y3JvcCwyMzkyLDE4NzAsNDEsMA.jpg','life','🏨','Design work for a hotel brand.',['Hospitality','Design']],
+    ['Ocean Blue Hotel','255788455/Ocean-Blue-Hotel','32dd2c255788455.6ab9545f96f99.png','life','🏨','Design work for a hotel brand.',['Hospitality','Design']],
     ['Eighteen Plus (Hair) Advertising Campaign','255787947/Eighteen-Plus-(Hair)-Advertising-Campaign','e03278255787947.Y3JvcCwxMjAwLDkzOCwwLDI1OA.png','beauty','💇','Advertising campaign for a hair care line.',['Advertising','Hair care']],
     ['Skin Guard | Social Media','255787361/Skin-Guard-Social-Media','01e381255787361.Y3JvcCwxMDIyLDgwMCw0MzcsMA.jpg','beauty','🧴','Social media designs for the Skin Guard brand.',['Social media','Skin care']],
     ['Cordless | Social Media','255786627/Cordless-Social-Media','7abe6d255786627.Y3JvcCwxMDgwLDg0NCwwLDExNw.png','brand','📱','Social media designs for the Cordless brand.',['Social media','Branding']],
