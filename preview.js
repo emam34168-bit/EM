@@ -90,3 +90,67 @@ document.getElementById('briefForm').addEventListener('submit',e=>{
  document.getElementById('draftPanel').hidden=false;
  document.getElementById('briefStatus').textContent='Draft prepared. Nothing has been sent.';
 });
+
+(function(){
+var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* Particle network */
+  var canvas = document.getElementById('bg-canvas'), ctx = canvas.getContext('2d');
+  var W, H, dpr, particles = [], colors = ['#6d63ff','#ff2d95','#22d3ee','#fbbf24'];
+  var mouse = {x: null, y: null};
+  window.addEventListener('mousemove', function(e){ mouse.x = e.clientX; mouse.y = e.clientY; });
+  window.addEventListener('mouseout', function(){ mouse.x = mouse.y = null; });
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var count = Math.max(30, Math.min(95, Math.floor(W * H / 15000)));
+    particles = [];
+    for(var i = 0; i < count; i++){
+      particles.push({
+        x: Math.random() * W, y: Math.random() * H,
+        vx: (Math.random() - .5) * .45, vy: (Math.random() - .5) * .45,
+        r: Math.random() * 1.8 + 1, c: colors[i % colors.length]
+      });
+    }
+  }
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+    var maxD = 140;
+    for(var i = 0; i < particles.length; i++){
+      var p = particles[i];
+      if(!reduce){
+        p.x += p.vx; p.y += p.vy;
+        if(p.x < 0 || p.x > W) p.vx *= -1;
+        if(p.y < 0 || p.y > H) p.vy *= -1;
+      }
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.2832);
+      ctx.fillStyle = p.c; ctx.shadowColor = p.c; ctx.shadowBlur = 8; ctx.fill(); ctx.shadowBlur = 0;
+      for(var j = i + 1; j < particles.length; j++){
+        var q = particles[j], dx = p.x - q.x, dy = p.y - q.y, d = Math.sqrt(dx*dx + dy*dy);
+        if(d < maxD){
+          ctx.globalAlpha = (1 - d / maxD) * .38;
+          ctx.strokeStyle = p.c; ctx.lineWidth = .8;
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+          ctx.globalAlpha = 1;
+        }
+      }
+      if(mouse.x !== null){
+        var mdx = p.x - mouse.x, mdy = p.y - mouse.y, md = Math.sqrt(mdx*mdx + mdy*mdy);
+        if(md < 160){
+          ctx.globalAlpha = (1 - md / 160) * .55;
+          ctx.strokeStyle = '#22d3ee'; ctx.lineWidth = .9;
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+          ctx.globalAlpha = 1;
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  resize(); draw();
+  var rt; window.addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(resize, 200); });
+
+
+})();
